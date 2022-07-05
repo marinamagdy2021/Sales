@@ -38,7 +38,12 @@
             </div>
         </div>
         <div class="row my-2 fs-5 "  >
-            <div class="col-lg-6"></div>
+            <div class="col-lg-3 ">
+                <p-confirmDialog header="Confirmation to delete invoice" icon="pi pi-exclamation-triangle" [style]="{width: '50vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-outlined"></p-confirmDialog>
+                <p-button  styleClass="p-button-danger" (click)="confirm()"  icon="pi pi-times" label="Delete"></p-button>
+                <!-- <button class="form-control form-control-lg btn btn-outline-danger" (click)="Delete()" >Clear </button> -->
+            </div>
+            <div class="col-lg-3"></div>
             <div class="col-lg-3 ">
                 <label class="form-control form-control-lg "> {{invoice.clientName }} </label>
                 <!-- <input class="form-control form-control-lg " type="text"  [(ngModel)]="invoice.clientName" > -->

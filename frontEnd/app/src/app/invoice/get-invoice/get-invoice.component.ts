@@ -1,14 +1,17 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ConfirmationService, PrimeNGConfig } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { Invoice } from 'src/app/_Models/invoice';
 import { InvoiceDetails } from 'src/app/_Models/invoice-details';
 import { InvoiceServiceService } from '../invoice-service.service';
 
+
 @Component({
   selector: 'app-get-invoice',
   templateUrl: './get-invoice.component.html',
-  styleUrls: ['./get-invoice.component.css']
+  styleUrls: ['./get-invoice.component.css'],
+  providers: [ConfirmationService]
 })
 export class GetInvoiceComponent implements OnInit ,OnDestroy{
   invoice:Invoice= new Invoice();
@@ -20,8 +23,11 @@ export class GetInvoiceComponent implements OnInit ,OnDestroy{
   hideDate= false;
   errorMessage = '';
   IdPattern = "^[0-9]+$";
-
-  constructor(public invoiceService: InvoiceServiceService) { }
+//,private confirmationService: ConfirmationService
+  constructor(
+          public invoiceService: InvoiceServiceService 
+    ,     private confirmationService: ConfirmationService,
+    ){ }
  
   ngOnDestroy(): void {
     this.subscribe?.unsubscribe();
@@ -34,10 +40,9 @@ export class GetInvoiceComponent implements OnInit ,OnDestroy{
     this.subscribe = this.invoiceService.getInvoice(this.id).subscribe(
       { next:data=>{
         this.hideDate= false;
-        console.log(data)
+        console.log(data);
         this.invoiceDetails= data.invoiceDetails
         this.invoice = data;
-        
         this.showResult= true ;
         this.showError = false;
        },
@@ -53,6 +58,23 @@ export class GetInvoiceComponent implements OnInit ,OnDestroy{
     this.hideDate= true;
     this.invoice=new Invoice();
     this.invoiceDetails=[];
+  }
+
+  confirm(){
+    this.confirmationService.confirm({
+      message: 'Are you sure that you want to delete this invoice ?',
+      accept: () => {
+        this.subscribe = this.invoiceService.deleteInvoice(this.id).subscribe(
+          { next:data=>{
+                console.log("Deleted",data);
+                this.showResult = false;
+           },
+           error:err=>{
+            console.log("still ",err);
+           }}
+         );
+      }
+ });
   }
 
 

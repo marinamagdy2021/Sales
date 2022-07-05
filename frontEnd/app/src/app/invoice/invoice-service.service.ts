@@ -20,6 +20,9 @@ export class InvoiceServiceService {
   generateInvoice(invoice:Invoice){
 
   }
+  deleteInvoice(id:string){
+    return this.http.delete<any>(this.baseUrl+"invoice/"+id);
+  }
 
 }
 

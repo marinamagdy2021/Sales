@@ -8,14 +8,13 @@ import { FormsModule } from '@angular/forms';
 import { InvoiceModule } from './invoice/invoice.module';
 import { HeaderComponent } from './_shared/Header/Header.component';
 
-
 @NgModule({
   declarations: [
     AppComponent,HeaderComponent
   ],
   imports: [
-    BrowserModule,AppRoutingModule,FormsModule ,
-    AppRoutingModule,HttpClientModule,InvoiceModule
+    BrowserModule, AppRoutingModule,FormsModule,
+    AppRoutingModule , HttpClientModule,InvoiceModule ,  
   ],
   providers: [],
   bootstrap: [AppComponent]
