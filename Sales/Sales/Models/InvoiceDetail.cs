@@ -25,6 +25,6 @@ namespace Sales.Models
 
         [ForeignKey(nameof(InvoiceId))]
         [InverseProperty("InvoiceDetails")]
-        public virtual Invoice Invoice { get; set; }
+        public virtual Invoice? Invoice { get; set; }
     }
 }

@@ -34,6 +34,7 @@ namespace Sales.Data
 
         protected void OnModelCreatingGeneratedProcedures(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<items_countResult>().HasNoKey().ToView(null);
             modelBuilder.Entity<total_priceResult>().HasNoKey().ToView(null);
         }
     }
@@ -45,6 +46,32 @@ namespace Sales.Data
         public SalesDbContextProcedures(SalesDbContext context)
         {
             _context = context;
+        }
+
+        public virtual async Task<List<items_countResult>> items_countAsync(int? id, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
+        {
+            var parameterreturnValue = new SqlParameter
+            {
+                ParameterName = "returnValue",
+                Direction = System.Data.ParameterDirection.Output,
+                SqlDbType = System.Data.SqlDbType.Int,
+            };
+
+            var sqlParameters = new []
+            {
+                new SqlParameter
+                {
+                    ParameterName = "id",
+                    Value = id ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.Int,
+                },
+                parameterreturnValue,
+            };
+            var _ = await _context.SqlQueryAsync<items_countResult>("EXEC @returnValue = [dbo].[items_count] @id", sqlParameters, cancellationToken);
+
+            returnValue?.SetValue(parameterreturnValue.Value);
+
+            return _;
         }
 
         public virtual async Task<List<total_priceResult>> total_priceAsync(int? id, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)

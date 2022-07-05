@@ -11,6 +11,9 @@ namespace Sales.Data
         public virtual DbSet<Invoice> Invoices { get; set; }
         public virtual DbSet<InvoiceDetail> InvoiceDetails { get; set; }
 
+        public virtual DbSet<total_priceResult> total_priceResult { get; set; }
+        public virtual DbSet<items_countResult> items_countResult { get; set; }
+
         public SalesDbContext(DbContextOptions<SalesDbContext> options) : base(options)
         {
         }
@@ -19,8 +22,6 @@ namespace Sales.Data
         {
             modelBuilder.Entity<Invoice>(entity =>
             {
-                entity.Property(e => e.InvoiceId).ValueGeneratedNever();
-
                 entity.Property(e => e.ClientName).IsUnicode(false);
             });
 

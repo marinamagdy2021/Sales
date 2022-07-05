@@ -12,6 +12,7 @@ namespace Sales.Data
 {
     public partial interface ISalesDbContextProcedures
     {
+        Task<List<items_countResult>> items_countAsync(int? id, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
         Task<List<total_priceResult>> total_priceAsync(int? id, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
     }
 }

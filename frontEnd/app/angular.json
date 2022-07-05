@@ -29,7 +29,12 @@
             "styles": [
               "src/styles.css"
             ],
-            "scripts": []
+            "scripts": [
+              "./node_modules/bootstrap/dist/js/bootstrap.min.js"
+             ,"./node_modules/fontawesome-free/js/all.min.js"
+
+
+            ]
           },
           "configurations": {
             "production": {

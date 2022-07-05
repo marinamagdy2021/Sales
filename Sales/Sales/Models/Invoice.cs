@@ -25,9 +25,11 @@ namespace Sales.Models
         [Column("date", TypeName = "datetime")]
         public DateTime Date { get; set; }
         [Column("items_Count")]
-        public int ItemsCount { get; set; }
+        public int? ItemsCount { get; set; }
+        [Column("total_Price", TypeName = "decimal(10, 2)")]
+        public decimal? TotalPrice { get; set; }
 
         [InverseProperty(nameof(InvoiceDetail.Invoice))]
-        public virtual ICollection<InvoiceDetail> InvoiceDetails { get; set; }
+        public virtual ICollection<InvoiceDetail>? InvoiceDetails { get; set; }
     }
 }
