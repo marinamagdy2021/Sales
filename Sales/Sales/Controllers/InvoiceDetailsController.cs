@@ -84,30 +84,33 @@ namespace Sales.Controllers
         // POST: api/InvoiceDetails
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<InvoiceDetail>> PostInvoiceDetail(InvoiceDetail invoiceDetail)
+        public async Task<ActionResult<InvoiceDetail>> PostInvoiceDetail(InvoiceDetail[] invoiceDetails)
         {
           if (_context.InvoiceDetails == null)
           {
               return Problem("Entity set 'SalesDbContext.InvoiceDetails'  is null.");
           }
-            _context.InvoiceDetails.Add(invoiceDetail);
-            try
+            foreach(var invoiceDetail in invoiceDetails)
             {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-                if (InvoiceDetailExists(invoiceDetail.ItemName))
+                _context.InvoiceDetails.Add(invoiceDetail);
+                try
                 {
-                    return Conflict();
+                    await _context.SaveChangesAsync();
                 }
-                else
+                catch (DbUpdateException)
                 {
-                    throw;
+                    if (InvoiceDetailExists(invoiceDetail.ItemName))
+                    {
+                        return Conflict();
+                    }
+                    else
+                    {
+                        throw;
+                    }
                 }
-            }
+            }   
 
-            return CreatedAtAction("GetInvoiceDetail", new { id = invoiceDetail.ItemName }, invoiceDetail);
+            return CreatedAtAction("GetInvoiceDetail", invoiceDetails);
         }
 
         // DELETE: api/InvoiceDetails/5

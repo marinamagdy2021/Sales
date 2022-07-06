@@ -14,6 +14,7 @@ namespace Sales.Models
         [StringLength(50)]
         [Unicode(false)]
         public string ItemName { get; set; }
+        [Key]
         [Column("invoice_Id")]
         public int InvoiceId { get; set; }
         [Column("price", TypeName = "decimal(10, 2)")]

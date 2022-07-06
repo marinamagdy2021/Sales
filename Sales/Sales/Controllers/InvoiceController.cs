@@ -33,6 +33,7 @@ namespace Sales.Controllers
         //    return await _context.Invoices.ToListAsync();
         //}
 
+
         // GET: api/Invoice/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Invoice>> GetInvoice(int id)
@@ -98,7 +99,30 @@ namespace Sales.Controllers
             _context.Invoices.Add(invoice);
             try
             {
+               // await _context.SaveChangesAsync();
+                if (_context.InvoiceDetails == null)
+                {
+                    return Problem("Entity set 'SalesDbContext.InvoiceDetails'  is null.");
+                }
+
+                foreach (var invoiceDetail in invoice.InvoiceDetails)
+                {
+                    _context.InvoiceDetails.Add(invoiceDetail);
+                    try
+                    {
+                       // await _context.SaveChangesAsync();
+                    }
+                    catch (DbUpdateException)
+                    {
+                       
+                      
+                            throw;
+                        //}
+                    }
+                }
+
                 await _context.SaveChangesAsync();
+
             }
             catch (DbUpdateException)
             {
@@ -111,7 +135,6 @@ namespace Sales.Controllers
                     throw;
                 }
             }
-
             return CreatedAtAction("GetInvoice", new { id = invoice.InvoiceId }, invoice);
         }
 

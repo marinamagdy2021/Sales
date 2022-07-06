@@ -37,22 +37,32 @@ export class GetInvoiceComponent implements OnInit ,OnDestroy{
     
   }
   ShowInvoiceDetails(){
-    this.subscribe = this.invoiceService.getInvoice(this.id).subscribe(
-      { next:data=>{
+    if(this.id.match(this.IdPattern)&&this.id!="")
+    {
+      this.subscribe = this.invoiceService.getInvoice(this.id).subscribe(
+        { next:data=>{
         this.hideDate= false;
         console.log(data);
         this.invoiceDetails= data.invoiceDetails
         this.invoice = data;
         this.showResult= true ;
         this.showError = false;
-       },
-       error:err=>{
-          this.showResult= false ;
-          console.log('wrong ID', err);
-          this.showError = true;
-          this.errorMessage = 'Invalid ID !' ;
-       }}
-     );
+      },
+      error:err=>{
+        this.showResult= false ;
+        console.log('wrong ID', err);
+        this.showError = true;
+        this.errorMessage = 'Invalid ID !' ;
+      }}
+      );
+    }else if(this.id==""){
+      this.showError = true;
+      this.errorMessage = 'ID is required!' ;
+    }else
+    {
+      this.showError = true;
+      this.errorMessage = 'ID must be a number!' ;
+    }
   }
   clearData(){
     this.hideDate= true;
@@ -67,6 +77,7 @@ export class GetInvoiceComponent implements OnInit ,OnDestroy{
         this.subscribe = this.invoiceService.deleteInvoice(this.id).subscribe(
           { next:data=>{
                 console.log("Deleted",data);
+                this.id ="";
                 this.showResult = false;
            },
            error:err=>{

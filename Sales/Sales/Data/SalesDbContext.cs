@@ -31,12 +31,13 @@ namespace Sales.Data
 
                 entity.Property(e => e.Total).HasComputedColumnSql("([quantity]*[price])", false);
 
+                entity.HasKey(e => new { e.ItemName, e.InvoiceId }).HasName("PK_Invoice_Details");
+                
                 entity.HasOne(d => d.Invoice)
                     .WithMany(p => p.InvoiceDetails)
                     .HasForeignKey(d => d.InvoiceId)
                     .HasConstraintName("FK_Invoice_Details_Invoice");
             });
-
             OnModelCreatingGeneratedProcedures(modelBuilder);
             OnModelCreatingPartial(modelBuilder);
         }

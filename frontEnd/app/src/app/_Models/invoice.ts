@@ -1,3 +1,5 @@
+import { InvoiceDetails } from "./invoice-details";
+
 export class Invoice {
     constructor(
         public invoiceId:number=Number(),
@@ -5,5 +7,6 @@ export class Invoice {
         public date:Date= new Date(),
         public itemsCount:number=Number(),
         public totalPrice:number=Number(),
+        public invoiceDetails:InvoiceDetails[]=[],
     ){}
 }

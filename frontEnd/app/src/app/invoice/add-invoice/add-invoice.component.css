@@ -1,0 +1,17 @@
+thead{
+    color:#dfd000;
+    font-family:'Helvetica';
+  }
+  label{
+    
+    font-family:'Helvetica';
+    font-weight: bold;
+  }
+  table{
+    text-align: center;
+  }
+  .alert{
+    text-align: left;
+  }
+  
+  
