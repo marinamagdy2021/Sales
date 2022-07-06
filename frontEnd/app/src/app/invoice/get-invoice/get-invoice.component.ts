@@ -6,7 +6,6 @@ import { Invoice } from 'src/app/_Models/invoice';
 import { InvoiceDetails } from 'src/app/_Models/invoice-details';
 import { InvoiceServiceService } from '../invoice-service.service';
 
-
 @Component({
   selector: 'app-get-invoice',
   templateUrl: './get-invoice.component.html',
@@ -22,10 +21,11 @@ export class GetInvoiceComponent implements OnInit ,OnDestroy{
   showError = false;
   showError2 = false;
   hideDate= false;
+  ErrorDuringUpdate=false;
   enableEdit = false;
   errorMessage = '';
   errorMessage2 = '';
-  IdPattern = "^[0-9]+$";
+  IsNumberPattern = "^[0-9]+$";
   item : any ={itemName:"",quantity:null,price:null,invoiceId:0,total:0};
 
   constructor(public invoiceService: InvoiceServiceService , private confirmationService: ConfirmationService){ }
@@ -69,12 +69,20 @@ export class GetInvoiceComponent implements OnInit ,OnDestroy{
 
   //update specific row
   updateRow(i:any){
+    this.showError2=this.showError=false
     this.enableEdit= true;
     this.item= i ;
   }
 
 //save update of aspecific row
   saveUpdate(itm:any){
+    if(!itm.quantity.match(this.IsNumberPattern)||!itm.price.match(this.IsNumberPattern)) // 
+    {
+      this.ErrorDuringUpdate= true;
+      return 
+    }
+
+    this.ErrorDuringUpdate= false;
     this.enableEdit= false;
     this.invoice.totalPrice -=itm.total;
     this.item.total = itm.quantity*itm.price ;
@@ -83,7 +91,7 @@ export class GetInvoiceComponent implements OnInit ,OnDestroy{
 
 //show the table
   ShowInvoiceDetails(){
-    if(this.id.match(this.IdPattern)&&this.id!="")
+    if(this.id.match(this.IsNumberPattern)&&this.id!="")
     {
       this.subscribe = this.invoiceService.getInvoice(this.id).subscribe(
         { next:data=>{

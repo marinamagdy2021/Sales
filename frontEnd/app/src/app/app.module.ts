@@ -7,10 +7,11 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { InvoiceModule } from './invoice/invoice.module';
 import { HeaderComponent } from './_shared/Header/Header.component';
+import { FooterComponent } from './_shared/footer/footer.component';
 
 @NgModule({
   declarations: [
-    AppComponent,HeaderComponent
+    AppComponent,HeaderComponent, FooterComponent
   ],
   imports: [
     BrowserModule, AppRoutingModule,FormsModule,
