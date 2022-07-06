@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { AddInvoiceComponent } from './add-invoice/add-invoice.component';
 import {ConfirmDialogModule} from 'primeng/confirmdialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
+import {SidebarModule} from 'primeng/sidebar';
 
 @NgModule({
   declarations: [
@@ -13,7 +13,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     AddInvoiceComponent,
   ],
   imports: [ 
-    CommonModule, FormsModule, ConfirmDialogModule , BrowserAnimationsModule,
+    CommonModule, FormsModule,SidebarModule, ConfirmDialogModule , BrowserAnimationsModule,
   ],
   exports: [
     GetInvoiceComponent

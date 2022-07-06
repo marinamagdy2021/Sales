@@ -9,7 +9,7 @@ const routes: Routes = [
   {path:"invoice",component:GetInvoiceComponent},
   {path:"addinvoice",component:AddInvoiceComponent},
   
- // {path:"",redirectTo:"invoice",pathMatch:"full"},
+  {path:"",redirectTo:"invoice",pathMatch:"full"},
   {path:"**",component:NotFoundComponent}
 
 ];

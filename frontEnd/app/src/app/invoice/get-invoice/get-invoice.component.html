@@ -1,13 +1,13 @@
 
 
 <div class="container" style="text-align: right">
-    <div class="row my-5 fs-5 form-group">
+    <div class="row my-5 fs-5 form-group" *ngIf="!enableEdit">
         <div class="col-lg-3 col-sm-3 ">
             <button (click)="ShowInvoiceDetails()" class="form-control form-control-lg " >search </button>
         </div>
         <div class="col-lg-3 col-sm-1 "></div>
         <div class="col-lg-3 col-sm-5 ">
-            <input   class="form-control form-control-lg " id="id" [pattern]="IdPattern"  type="text" [(ngModel)]="id" placeholder="Enter Invoice Id" >
+            <input   class="form-control form-control-lg"  id="id" [pattern]="IdPattern"  type="text" [(ngModel)]="id" placeholder="Enter Invoice Id" >
             <div *ngIf="showError" role="alert" class="alert alert-danger fs-5 my-2" style="text-align: left">
                 {{errorMessage}}
             </div>
@@ -18,32 +18,34 @@
         </div>
     </div>
     
-    <div *ngIf="showResult">
+    <div *ngIf="showResult && !enableEdit">
      <hr>
         <div class="row my-2 fs-5  "  >
             <div class="col-lg-3 col-sm-3 ">
-                <button class="form-control form-control-lg btn btn-outline-danger" (click)="clearData()" >Clear </button>
+                <button class="form-control fs-5  form-control-lg btn btn-outline-danger" (click)="clearData()" >Clear </button>
             </div>
 
             <div class="col-lg-3 col-sm-1 "></div>
             <div class="col-lg-3 col-sm-5  ">
                 <label class="form-control form-control-lg "> {{invoice.invoiceId }} </label>
-                <!-- <input class="form-control form-control-lg " type="text" disabled="true" [(ngModel)]="invoice.invoiceId" > -->
             </div>
             <div class="col-lg-3 col-sm-3 ">
                 <label for="id">رقم الحركه </label>
             </div>
         </div>
+
         <div class="row my-2 fs-5 "  >
-            <div class="col-lg-3 col-sm-3  ">
-                <p-confirmDialog header="Confirmation to delete invoice" icon="pi pi-exclamation-triangle" [style]="{width: '50vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-outlined"></p-confirmDialog>
-                <p-button  styleClass="p-button-danger" (click)="confirm()"  icon="pi pi-times" label="Delete"></p-button>
-                <!-- <button class="form-control form-control-lg btn btn-outline-danger" (click)="Delete()" >Clear </button> -->
+           <div class="col-lg-3 col-sm-3  ">
+               <div >
+                   <p-confirmDialog header="Confirmation to delete invoice" icon="pi pi-exclamation-triangle" [style]="{width: '50vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-outlined"></p-confirmDialog>
+                   <p-button  styleClass="p-button-danger" [style]="{width: '18vw '}" (click)="confirm()"   label="Delete"></p-button>
+                </div>
+                
             </div>
             <div class="col-lg-3 col-sm-1 "></div>
             <div class="col-lg-3 col-sm-5 ">
-                <label class="form-control form-control-lg "> {{invoice.clientName }} </label>
-                <!-- <input class="form-control form-control-lg " type="text"  [(ngModel)]="invoice.clientName" > -->
+                <!-- <label class="form-control form-control-lg "> {{invoice.clientName }} </label> -->
+                <input class="form-control form-control-lg " type="text"  [(ngModel)]="invoice.clientName" >
             </div>
             <div class="col-lg-3 col-sm-3 ">
                 <label > اسم العميل </label>
@@ -65,15 +67,20 @@
         <div class="row my-3 fs-5 "  >
            <table class="table table-striped table-inverse table-responsive">
             <thead class="thead-inverse">
-                <tr>
+                <tr >
+                    <th> العمليه </th>
                     <th>الاجمالي </th>
                     <th>الكميه </th>
                     <th>سعر القطعه </th>
                     <th>الصنف</th>
+                    
                 </tr>
                 </thead>
-                <tbody>
-                    <tr *ngFor="let i of invoiceDetails">
+                <tbody>  
+                    <tr *ngFor="let i of invoiceDetails " class="hover-highlight">
+                        <td> 
+                            <button class=" mx-2 mb-3 fs-5  form-control-lg btn btn-outline-dark" (click)="updateRow(i)" >Update </button>
+                        </td> 
                         <td scope="row">{{i.total }}</td>
                         <td scope="row">{{i.quantity}}</td>
                         <td scope="row">{{i.price}}</td>
@@ -82,26 +89,75 @@
                 </tbody>
            </table>
         </div>
-        <hr>
-        <div class="row myt-5 fs-5 "  >
-            <div class="col-lg-8"></div>
-            <div class="col-lg-3">
-                
-                {{invoice.totalPrice |currency: "EGP":"symbol"}}
-                <label > :اجمالي الفاتوره</label>
-                <!-- <input class="form-control form-control-lg " type="text"  [(ngModel)]="invoice.totalPrice" > -->
-            </div>
-           
+        <div class="col-lg-3">
+            <button class="form-control mb-3 fs-5  form-control-lg btn btn-outline-warning" (click)="update()" >Update </button>
         </div>
-        <div class="row my-2 fs-5 "  >
-            <div class="col-lg-8"></div>
-            <div class="col-lg-3">
-                {{invoice.itemsCount}}
-                <label >:   عدد الاصناف </label>
-                <!-- <input class="form-control form-control-lg " type="text"  [(ngModel)]="invoice.itemsCount" > -->
+        <hr>
+        <div >
+            <div class="row myt-5 fs-5 "  >
+               
+                <div class="col-lg-8"></div>
+                <div class="col-lg-3">
+                    {{invoice.totalPrice |currency: " EGP ":"symbol"}}
+                    <label > :اجمالي الفاتوره</label>
+                    <!-- <input class="form-control form-control-lg " type="text"  [(ngModel)]="invoice.totalPrice" > -->
+                </div>
+                
+            </div>
+            <div class="row my-2 fs-5 "  >
+                <div class="col-lg-8"></div>
+                <div class="col-lg-3">
+                    {{invoice.itemsCount}}
+                    <label >:   عدد الاصناف </label>
+                    <!-- <input class="form-control form-control-lg " type="text"  [(ngModel)]="invoice.itemsCount" > -->
+                </div>
             </div>
         </div>
     </div>
+
+    <div *ngIf="enableEdit">
+            <!-- item name -->
+            <div class="row my-2 mt-5 fs-5 form-group">
+                <div class="col-lg-6 col-sm-1"></div>
+                <div class="col-lg-3 col-sm-5 ">
+                    <input id="itemName"  class="form-control form-control-lg " disabled id="id" type="text" [(ngModel)]="item.itemName" placeholder="Enter item name " >
+                </div>
+                <div class="col-lg-3 col-sm-5">
+                    <label for="itemName"> اسم الصنف </label>
+                </div>
+            </div>
+                <!-- price -->
+        
+            <div class="row my-2 fs-5 form-group">
+                <div class="col-lg-6 col-sm-1"></div>
+                <div class="col-lg-3 col-sm-5">
+                    <input id="price"  class="form-control form-control-lg " [pattern]="IdPattern"  type="text" [(ngModel)]="item.price" placeholder="Enter price" >
+                </div>
+                <div class="col-lg-3 col-sm-5">
+                    <label for="price"> سعر القطعه  </label>
+                </div>
+            </div>
+        
+                <!-- quantity -->
+            <div class="row my-2 fs-5 form-group">
+                <div class="col-lg-6 col-sm-1"></div>
+                <div class="col-lg-3 col-sm-5">
+                    <input   class="form-control form-control-lg " id="quantity" 
+                            [ngModelOptions]="{standalone: true}" [pattern]="IdPattern"  
+                            type="text" [(ngModel)]="item.quantity" placeholder="Enter quantity " >
+                </div>
+                <div class="col-lg-3 col-sm-5">
+                    <label for="quantity"> الكميه </label>
+                </div>
+            </div>  
+            <button class=" mx-2 mb-3 fs-5  form-control-lg btn btn-outline-secondary" (click)="Back()" >Back </button>
+            <button class=" mx-2 mb-3 fs-5  form-control-lg btn btn-outline-warning" (click)="saveUpdate(item)" >Update </button>
+            
+            
+        </div>
+        <div *ngIf="showError2" role="alert" class="alert alert-danger fs-5 my-2" style="text-align: left">
+            {{errorMessage2}}
+        </div>
 </div>
 
    

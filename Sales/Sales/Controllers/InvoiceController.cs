@@ -65,9 +65,13 @@ namespace Sales.Controllers
             {
                 return BadRequest();
             }
-
             _context.Entry(invoice).State = EntityState.Modified;
 
+            foreach (var invoiceDetail in invoice.InvoiceDetails)
+            {
+                _context.Entry(invoiceDetail).State = EntityState.Modified;
+            }
+            
             try
             {
                 await _context.SaveChangesAsync();
@@ -108,21 +112,15 @@ namespace Sales.Controllers
                 foreach (var invoiceDetail in invoice.InvoiceDetails)
                 {
                     _context.InvoiceDetails.Add(invoiceDetail);
-                    try
-                    {
-                       // await _context.SaveChangesAsync();
-                    }
-                    catch (DbUpdateException)
-                    {
-                       
-                      
-                            throw;
-                        //}
-                    }
                 }
-
-                await _context.SaveChangesAsync();
-
+                try
+                {
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateException)
+                {
+                    throw;
+                }
             }
             catch (DbUpdateException)
             {

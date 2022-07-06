@@ -80,25 +80,25 @@ export class AddInvoiceComponent implements OnInit , OnDestroy {
     if(this.onSubmitError && myForm.valid )
     {
         this.onSubmitError= false;
-        console.log("hello",myForm);
+        //console.log("hello",myForm);
         this.invoiceDetails.map( (item,i) => {
         this.invoice.totalPrice += item.total;
         this.invoice.itemsCount = (i+1);
         this.invoice.invoiceDetails=this.invoiceDetails;
       });
-      console.log(this.invoice);
+      //console.log(this.invoice);
     this.subscribe = this.invoiceService.generateInvoice(this.invoice).subscribe(
       { next:data=>{
-        console.log(data);
+        //console.log(data);
         this.invoice = data;
         this.showResult= true ;
         this.showError = false;
       },
       error:err=>{
+        //console.log(err);
         this.showResult= false ;
-        console.log(err);
         this.showError = true;
-        this.errorMessage = " Duplicated data ! " ;
+        this.errorMessage = " This invoice already exists ! " ;
       }}
       );      
     }

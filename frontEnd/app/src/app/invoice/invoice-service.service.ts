@@ -15,8 +15,8 @@ export class InvoiceServiceService {
     return this.http.get<any>(this.baseUrl+"invoice/"+id) ;
   }
 
-  editInvoice(invoice:Invoice){
-    return this.http.put<undefined>(this.baseUrl+"invoice/",invoice);
+  editInvoice(id:number,invoice:Invoice){
+    return this.http.put<undefined>(this.baseUrl+"invoice/"+id,invoice);
   }
 
   generateInvoice(invoice:Invoice){
